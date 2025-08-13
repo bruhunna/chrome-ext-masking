@@ -11,6 +11,17 @@ A Chrome extension that allows users to manually mask any element on a webpage b
 - **Toggle Masking**: Hold Ctrl/⌘ and click masked elements again to unmask them
 - **Smooth Animations**: Professional transitions and visual effects
 
+### Keyboard Shortcuts
+- **Ctrl+Shift+M** (Cmd+Shift+M on Mac): Quick toggle masking mode on/off
+- **Ctrl+Shift+C** (Cmd+Shift+C on Mac): Clear all masks instantly
+- **Works from any page**: No need to open the popup interface
+
+### Multiple Mask Styles
+- **Blur Style**: Maintains element shape with blur filter (subtle masking)
+- **Solid Style**: Completely covers content with dark background (strong masking)
+- **Style Toggle**: Switch between styles via popup interface or keyboard shortcut
+- **Real-time Updates**: Existing masks instantly update when style is changed
+
 ### Privacy & Control
 - **Precise Control**: You decide exactly what gets masked
 - **Instant Results**: Elements are masked immediately with dark overlay and blur effect
@@ -18,9 +29,13 @@ A Chrome extension that allows users to manually mask any element on a webpage b
 - **Session Persistence**: Masking state persists across page reloads
 
 ### User-Friendly Interface
-- Simple one-button interface
-- Clear visual indicators (blue = inactive, red = active)
-- Success/error message feedback
+
+- Modern toggle switch design with gradient effects
+- Visual badge counter showing masked element count on extension icon
+- Style selector with blur/solid preview options
+- Real-time statistics display in popup
+- Clear visual indicators (green = active, gray = inactive)
+- Success/error message feedback with toast notifications
 - Works on all websites (except Chrome internal pages)
 
 ## 📥 Installation
@@ -38,14 +53,25 @@ A Chrome extension that allows users to manually mask any element on a webpage b
 
 ## 🚀 Quick Start
 
+### Method 1: Using the Popup Interface
+
 1. **Install the extension** using one of the methods above
 2. **Navigate to any website** you want to mask content on
 3. **Click the Element Masker icon** in your browser toolbar
-4. **Click "Activate Masking Mode"** (button turns red)
-5. **Hover over elements** to see them highlighted with blue outline
-6. **Click elements** to mask them (they turn dark with ██████ text)
-7. **Click masked elements again** to unmask them
-8. **Click "Deactivate Masking Mode"** when finished
+4. **Toggle "Masking Mode" switch** (switch turns purple/blue and shows "Active")
+5. **Hold Ctrl/⌘ + hover over elements** to see them highlighted with blue outline
+6. **Hold Ctrl/⌘ + click elements** to mask them (they turn dark or blurred)
+7. **Use style buttons** to switch between blur and solid masking styles
+8. **Monitor the badge counter** on the extension icon showing number of masked elements
+9. **Toggle "Masking Mode" switch off** when finished
+
+### Method 2: Using Keyboard Shortcuts (Fastest)
+
+1. **Install the extension** and navigate to any website
+2. **Press Ctrl+Shift+M** (Cmd+Shift+M on Mac) to instantly toggle masking mode
+3. **Hold Ctrl/⌘ + click elements** to mask them
+4. **Press Ctrl+Shift+C** (Cmd+Shift+C on Mac) to clear all masks instantly
+5. **Press Ctrl+Shift+M** again to deactivate masking mode
 
 ## 💻 Usage
 
