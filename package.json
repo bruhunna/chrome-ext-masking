@@ -1,0 +1,34 @@
+{
+  "name": "chrome-extension-content-masking",
+  "version": "1.0.0",
+  "description": "A Chrome extension that masks sensitive content on websites for privacy protection",
+  "main": "manifest.json",
+  "scripts": {
+    "build": "echo 'Building Chrome extension...'",
+    "test": "echo 'No tests configured yet'",
+    "lint": "echo 'Linting extension files...'",
+    "package": "zip -r content-masking-extension.zip . -x '*.git*' 'node_modules/*' '*.DS_Store' 'package*.json'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "privacy",
+    "security",
+    "masking",
+    "content-protection",
+    "browser-extension"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bruhunna/chrome-ext-masking.git"
+  },
+  "devDependencies": {},
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "Chrome >= 88"
+  ]
+}
