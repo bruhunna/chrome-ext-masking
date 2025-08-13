@@ -5,30 +5,59 @@ document.addEventListener("DOMContentLoaded", () => {
   const messageToast = document.getElementById("messageToast");
   const helpBtn = document.getElementById("helpBtn");
   const testBtn = document.getElementById("testBtn");
+  const maskCountElement = document.getElementById("maskCount");
+  const currentStyleElement = document.getElementById("currentStyle");
+  const blurStyleBtn = document.getElementById("blurStyle");
+  const solidStyleBtn = document.getElementById("solidStyle");
+  const maskStyleSection = document.getElementById("maskStyleSection");
+  const statsSection = document.getElementById("statsSection");
+
+  let currentMaskStyle = "blur";
 
   // Function to show toast messages
   function showToast(message, type = "success") {
     messageToast.textContent = message;
-    messageToast.className = `message-toast show ${type === "error" ? "error" : ""}`;
-    
+    messageToast.className = `message-toast show ${
+      type === "error" ? "error" : ""
+    }`;
+
     setTimeout(() => {
       messageToast.classList.remove("show");
     }, 3000);
   }
 
   // Function to update UI state
-  function updateUIState(isActive) {
+  function updateUIState(isActive, maskCount = 0, maskStyle = "blur") {
     if (isActive) {
       toggleSwitch.classList.add("active");
       statusIndicator.textContent = "Active";
       statusIndicator.className = "status-indicator active";
       instructionsCard.classList.add("active");
+      maskStyleSection.style.display = "block";
+      statsSection.style.display = "block";
     } else {
       toggleSwitch.classList.remove("active");
       statusIndicator.textContent = "Inactive";
       statusIndicator.className = "status-indicator inactive";
       instructionsCard.classList.remove("active");
+      maskStyleSection.style.display = "none";
+      statsSection.style.display = "none";
     }
+
+    // Update mask count
+    maskCountElement.textContent = maskCount;
+
+    // Update current style
+    currentMaskStyle = maskStyle;
+    currentStyleElement.textContent =
+      maskStyle.charAt(0).toUpperCase() + maskStyle.slice(1);
+    updateStyleButtons();
+  }
+
+  // Function to update style buttons
+  function updateStyleButtons() {
+    blurStyleBtn.classList.toggle("active", currentMaskStyle === "blur");
+    solidStyleBtn.classList.toggle("active", currentMaskStyle === "solid");
   }
 
   // Get the initial state from content script (if active on page load)
@@ -47,7 +76,11 @@ document.addEventListener("DOMContentLoaded", () => {
             );
             updateUIState(false);
           } else if (response && response.isMaskingActive) {
-            updateUIState(true);
+            updateUIState(
+              response.isMaskingActive,
+              response.maskCount || 0,
+              response.maskStyle || "blur"
+            );
           } else {
             updateUIState(false);
           }
@@ -78,9 +111,15 @@ document.addEventListener("DOMContentLoaded", () => {
               return;
             }
             if (response && response.isMaskingActive !== undefined) {
-              updateUIState(response.isMaskingActive);
+              updateUIState(
+                response.isMaskingActive,
+                response.maskCount || 0,
+                response.maskStyle || "blur"
+              );
               if (response.isMaskingActive) {
-                showToast("Masking mode activated! Hold Ctrl/⌘ + Click elements to mask them.");
+                showToast(
+                  "Masking mode activated! Hold Ctrl/⌘ + Click elements to mask them."
+                );
               } else {
                 showToast("Masking mode deactivated. All masks cleared.");
               }
@@ -106,4 +145,40 @@ document.addEventListener("DOMContentLoaded", () => {
     chrome.tabs.create({ url: chrome.runtime.getURL("test-page.html") });
     window.close();
   });
+
+  // Style button handlers
+  function handleStyleChange(newStyle) {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]) {
+        chrome.tabs.sendMessage(
+          tabs[0].id,
+          { action: "toggleMaskStyle" },
+          (response) => {
+            if (!chrome.runtime.lastError) {
+              currentMaskStyle = newStyle;
+              updateStyleButtons();
+              currentStyleElement.textContent =
+                newStyle.charAt(0).toUpperCase() + newStyle.slice(1);
+              showToast(`Mask style changed to ${newStyle}`);
+            }
+          }
+        );
+      }
+    });
+  }
+
+  blurStyleBtn.addEventListener("click", () => {
+    if (currentMaskStyle !== "blur") {
+      handleStyleChange("blur");
+    }
+  });
+
+  solidStyleBtn.addEventListener("click", () => {
+    if (currentMaskStyle !== "solid") {
+      handleStyleChange("solid");
+    }
+  });
+
+  // Initialize style buttons
+  updateStyleButtons();
 });
