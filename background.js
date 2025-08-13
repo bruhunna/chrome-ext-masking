@@ -27,6 +27,17 @@ chrome.runtime.onInstalled.addListener((details) => {
   }
 });
 
+// Handle keyboard shortcuts
+chrome.commands.onCommand.addListener((command) => {
+  console.log("Keyboard command received:", command);
+
+  if (command === "toggle-masking") {
+    toggleMaskingViaShortcut();
+  } else if (command === "clear-all-masks") {
+    clearAllMasksViaShortcut();
+  }
+});
+
 // Handle messages from content scripts and popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log("Background received message:", request);
@@ -39,6 +50,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "toggleMasking":
       toggleMasking(request.enabled, sendResponse);
       return true;
+
+    case "updateBadge":
+      updateBadge(request.count, sender.tab.id);
+      break;
 
     default:
       console.log("Unknown message action:", request.action);
@@ -72,5 +87,38 @@ function toggleMasking(enabled, sendResponse) {
       success: true,
       enabled: enabled,
     });
+  });
+}
+
+// Keyboard shortcut handlers
+function toggleMaskingViaShortcut() {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (tabs[0]) {
+      chrome.tabs.sendMessage(tabs[0].id, { action: "toggleMaskingMode" });
+    }
+  });
+}
+
+function clearAllMasksViaShortcut() {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (tabs[0]) {
+      chrome.tabs.sendMessage(tabs[0].id, { action: "clearAllMasks" });
+    }
+  });
+}
+
+// Badge counter update
+function updateBadge(count, tabId) {
+  const badgeText = count > 0 ? count.toString() : "";
+  const badgeColor = count > 0 ? "#2563eb" : "#d1d5db";
+
+  chrome.action.setBadgeText({
+    text: badgeText,
+    tabId: tabId,
+  });
+
+  chrome.action.setBadgeBackgroundColor({
+    color: badgeColor,
+    tabId: tabId,
   });
 }
