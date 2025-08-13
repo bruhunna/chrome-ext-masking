@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Content Masking Test Page</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      .test-section {
+        background: #f5f5f5;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+        border-left: 4px solid #2196f3;
+      }
+      .test-section h3 {
+        margin-top: 0;
+        color: #2196f3;
+      }
+      .example {
+        background: white;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+      }
+      .instructions {
+        background: #e3f2fd;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🛡️ Content Masking Extension Test Page</h1>
+
+    <div class="instructions">
+      <h2>Testing Instructions:</h2>
+      <ol>
+        <li>Load the Content Masking extension in Chrome</li>
+        <li>Click the extension icon in your toolbar</li>
+        <li>Toggle "Enable Masking" ON</li>
+        <li>Select the types of content you want to mask</li>
+        <li>Click "Apply Masking" button</li>
+        <li>Watch the content below get masked with bullet points (•••)</li>
+      </ol>
+    </div>
+
+    <div class="test-section">
+      <h3>📧 Email Addresses</h3>
+      <div class="example">
+        <p>Contact us at: support@company.com</p>
+        <p>Sales inquiries: john.doe@example.org</p>
+        <p>Technical support: tech.support@mycompany.net</p>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h3>📱 Phone Numbers</h3>
+      <div class="example">
+        <p>Call us: (555) 123-4567</p>
+        <p>International: +1-800-555-0199</p>
+        <p>Alternative format: 555.123.4567</p>
+        <p>Simple format: 555-123-4567</p>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h3>💳 Credit Card Numbers</h3>
+      <div class="example">
+        <p>Visa: 4111 1111 1111 1111</p>
+        <p>MasterCard: 5555-5555-5555-4444</p>
+        <p>American Express: 3782 822463 10005</p>
+        <p>Discover: 6011111111111117</p>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h3>🆔 Social Security Numbers</h3>
+      <div class="example">
+        <p>SSN: 123-45-6789</p>
+        <p>Alternative format: 987654321</p>
+        <p>With spaces: 555 44 3333</p>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h3>📝 Mixed Content Example</h3>
+      <div class="example">
+        <p>
+          Hi John, please contact me at john.smith@company.com or call (555)
+          987-6543. For payment, use card 4111 1111 1111 1111 and reference SSN
+          123-45-6789.
+        </p>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h3>🔧 Custom Rule Testing</h3>
+      <div class="example">
+        <p>This content contains the word "confidential" information.</p>
+        <p>Another example with "secret" data that should be masked.</p>
+        <p>Test custom masking with "proprietary" content.</p>
+      </div>
+      <p>
+        <strong>Instructions:</strong> Add "confidential", "secret", or
+        "proprietary" as custom rules in the extension popup to test custom
+        masking.
+      </p>
+    </div>
+
+    <div class="test-section">
+      <h3>📝 Input Fields Test</h3>
+      <div class="example">
+        <form>
+          <p>
+            <label
+              >Email: <input type="email" placeholder="Enter your email"
+            /></label>
+          </p>
+          <p>
+            <label
+              >Phone: <input type="tel" placeholder="Enter phone number"
+            /></label>
+          </p>
+          <p>
+            <label
+              >Credit Card:
+              <input type="text" placeholder="Enter credit card number"
+            /></label>
+          </p>
+          <p>
+            <label
+              >Comments:
+              <textarea
+                placeholder="Enter any sensitive information"
+              ></textarea>
+            </label>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Add some dynamic content to test dynamic masking
+      setTimeout(() => {
+        const dynamicDiv = document.createElement("div");
+        dynamicDiv.className = "test-section";
+        dynamicDiv.innerHTML = `
+                <h3>⚡ Dynamic Content Test</h3>
+                <div class="example">
+                    <p>Dynamically added email: dynamic@test.com</p>
+                    <p>Dynamically added phone: (555) 999-8888</p>
+                </div>
+            `;
+        document.body.appendChild(dynamicDiv);
+      }, 3000);
+    </script>
+  </body>
+</html>
