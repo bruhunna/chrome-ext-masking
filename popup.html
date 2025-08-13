@@ -5,82 +5,275 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Element Masker</title>
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       body {
-        font-family: "Inter", sans-serif;
-        width: 200px;
-        padding: 15px;
-        text-align: center;
-        background-color: #f0f4f8;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        width: 280px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #333;
+        overflow: hidden;
       }
-      h2 {
-        color: #2c3e50;
-        margin-bottom: 20px;
-        font-size: 1.2em;
+
+      .container {
+        background: white;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
       }
-      button {
-        background-color: #3498db;
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 1em;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        font-weight: bold;
+        padding: 20px;
+        text-align: center;
+        position: relative;
       }
-      button:hover {
-        background-color: #2980b9;
-        transform: translateY(-2px);
+
+      .header h1 {
+        font-size: 1.3em;
+        font-weight: 600;
+        margin-bottom: 5px;
       }
-      button:active {
-        transform: translateY(0);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+      .header .subtitle {
+        font-size: 0.85em;
+        opacity: 0.9;
+        font-weight: 400;
       }
-      .message-box {
-        margin-top: 15px;
-        padding: 10px;
-        background-color: #e8f5e9;
-        color: #28a745;
-        border: 1px solid #c8e6c9;
-        border-radius: 5px;
-        font-size: 0.9em;
-        display: none; /* Hidden by default */
+
+      .main-content {
+        padding: 20px;
       }
-      .instructions {
-        margin-top: 10px;
-        padding: 8px;
-        background-color: #fff3cd;
-        color: #856404;
-        border: 1px solid #ffeaa7;
-        border-radius: 5px;
+
+      .toggle-section {
+        margin-bottom: 20px;
+      }
+
+      .toggle-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 500;
+        font-size: 0.95em;
+        margin-bottom: 15px;
+        color: #2c3e50;
+      }
+
+      .status-indicator {
         font-size: 0.8em;
-        text-align: left;
-        display: none;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-weight: 500;
+        transition: all 0.3s ease;
       }
-      .instructions.active {
+
+      .status-indicator.inactive {
+        background: #f8f9fa;
+        color: #6c757d;
+      }
+
+      .status-indicator.active {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      /* Custom Toggle Switch */
+      .toggle-switch {
+        position: relative;
+        width: 60px;
+        height: 30px;
+        background: #ddd;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+      }
+
+      .toggle-switch.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .toggle-slider {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 22px;
+        height: 22px;
+        background: white;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .toggle-switch.active .toggle-slider {
+        transform: translateX(30px);
+      }
+
+      .instructions-card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-left: 4px solid #667eea;
+        display: none;
+        animation: slideIn 0.3s ease;
+      }
+
+      .instructions-card.active {
         display: block;
       }
+
+      .instructions-title {
+        font-weight: 600;
+        font-size: 0.9em;
+        color: #2c3e50;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .instructions-list {
+        font-size: 0.8em;
+        line-height: 1.4;
+        color: #495057;
+      }
+
       .key-combo {
-        font-weight: bold;
+        background: #667eea;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+        font-size: 0.75em;
+        font-weight: 500;
+      }
+
+      .quick-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 15px;
+      }
+
+      .action-btn {
+        flex: 1;
         background: #f8f9fa;
-        padding: 2px 4px;
-        border-radius: 3px;
-        font-family: monospace;
+        border: 1px solid #e9ecef;
+        color: #495057;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.8em;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: center;
+        text-decoration: none;
+      }
+
+      .action-btn:hover {
+        background: #e9ecef;
+        color: #2c3e50;
+      }
+
+      .message-toast {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        background: #28a745;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 6px;
+        font-size: 0.85em;
+        transform: translateY(-100px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .message-toast.show {
+        transform: translateY(0);
+      }
+
+      .message-toast.error {
+        background: #dc3545;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .footer {
+        padding: 15px 20px 20px;
+        text-align: center;
+        border-top: 1px solid #e9ecef;
+        background: #f8f9fa;
+      }
+
+      .footer-text {
+        font-size: 0.75em;
+        color: #6c757d;
+        margin-bottom: 8px;
       }
     </style>
   </head>
   <body>
-    <h2>Element Masker</h2>
-    <button id="toggleMasking">Activate Masking Mode</button>
-    <div id="messageBox" class="message-box"></div>
-    <div id="instructions" class="instructions">
-      <strong>How to mask:</strong><br>
-      Hold <span class="key-combo">Ctrl</span> (or <span class="key-combo">⌘</span> on Mac) + Click any element to mask it
+    <div class="container">
+      <div class="header">
+        <h1>🛡️ Element Masker</h1>
+        <div class="subtitle">Privacy protection for your screen</div>
+      </div>
+
+      <div class="main-content">
+        <div class="toggle-section">
+          <div class="toggle-label">
+            <span>Masking Mode</span>
+            <span id="statusIndicator" class="status-indicator inactive">Inactive</span>
+          </div>
+          <div id="toggleSwitch" class="toggle-switch">
+            <div class="toggle-slider"></div>
+          </div>
+        </div>
+
+        <div id="instructionsCard" class="instructions-card">
+          <div class="instructions-title">
+            <span>💡</span>
+            <span>How to mask elements:</span>
+          </div>
+          <div class="instructions-list">
+            Hold <span class="key-combo">Ctrl</span> (or <span class="key-combo">⌘</span> on Mac) + Click any element to mask it
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <button class="action-btn" id="helpBtn">
+            📖 Guide
+          </button>
+          <button class="action-btn" id="testBtn">
+            🧪 Test Page
+          </button>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="footer-text">Click the toggle above to get started</div>
+      </div>
     </div>
+
+    <div id="messageToast" class="message-toast"></div>
+
     <script src="popup.js"></script>
   </body>
 </html>

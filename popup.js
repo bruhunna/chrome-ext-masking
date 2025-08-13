@@ -1,24 +1,34 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const toggleButton = document.getElementById("toggleMasking");
-  const messageBox = document.getElementById("messageBox");
-  const instructions = document.getElementById("instructions");
+  const toggleSwitch = document.getElementById("toggleSwitch");
+  const statusIndicator = document.getElementById("statusIndicator");
+  const instructionsCard = document.getElementById("instructionsCard");
+  const messageToast = document.getElementById("messageToast");
+  const helpBtn = document.getElementById("helpBtn");
+  const testBtn = document.getElementById("testBtn");
 
-  // Function to display messages in the popup
-  function showMessage(message, type = "success") {
-    messageBox.textContent = message;
-    messageBox.style.display = "block";
-    if (type === "error") {
-      messageBox.style.backgroundColor = "#ffe0b2"; // Light orange
-      messageBox.style.borderColor = "#ffb74d";
-      messageBox.style.color = "#e65100"; // Dark orange
-    } else {
-      messageBox.style.backgroundColor = "#e8f5e9"; // Light green
-      messageBox.style.borderColor = "#c8e6c9";
-      messageBox.style.color = "#28a745"; // Dark green
-    }
+  // Function to show toast messages
+  function showToast(message, type = "success") {
+    messageToast.textContent = message;
+    messageToast.className = `message-toast show ${type === "error" ? "error" : ""}`;
+    
     setTimeout(() => {
-      messageBox.style.display = "none";
-    }, 3000); // Hide after 3 seconds
+      messageToast.classList.remove("show");
+    }, 3000);
+  }
+
+  // Function to update UI state
+  function updateUIState(isActive) {
+    if (isActive) {
+      toggleSwitch.classList.add("active");
+      statusIndicator.textContent = "Active";
+      statusIndicator.className = "status-indicator active";
+      instructionsCard.classList.add("active");
+    } else {
+      toggleSwitch.classList.remove("active");
+      statusIndicator.textContent = "Inactive";
+      statusIndicator.className = "status-indicator inactive";
+      instructionsCard.classList.remove("active");
+    }
   }
 
   // Get the initial state from content script (if active on page load)
@@ -35,23 +45,19 @@ document.addEventListener("DOMContentLoaded", () => {
               "Could not get masking state from content script:",
               chrome.runtime.lastError.message
             );
-            toggleButton.textContent = "Activate Masking Mode";
-            toggleButton.style.backgroundColor = "#3498db";
+            updateUIState(false);
           } else if (response && response.isMaskingActive) {
-            toggleButton.textContent = "Deactivate Masking Mode";
-            toggleButton.style.backgroundColor = "#e74c3c"; // Red for active
-            instructions.classList.add("active");
+            updateUIState(true);
           } else {
-            toggleButton.textContent = "Activate Masking Mode";
-            toggleButton.style.backgroundColor = "#3498db"; // Blue for inactive
-            instructions.classList.remove("active");
+            updateUIState(false);
           }
         }
       );
     }
   });
 
-  toggleButton.addEventListener("click", () => {
+  // Toggle switch click handler
+  toggleSwitch.addEventListener("click", () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs[0]) {
         const tabId = tabs[0].id;
@@ -61,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
           { type: "TOGGLE_MASKING" },
           (response) => {
             if (chrome.runtime.lastError) {
-              showMessage(
+              showToast(
                 "Cannot activate masking on this page (e.g., Chrome internal pages).",
                 "error"
               );
@@ -72,27 +78,32 @@ document.addEventListener("DOMContentLoaded", () => {
               return;
             }
             if (response && response.isMaskingActive !== undefined) {
+              updateUIState(response.isMaskingActive);
               if (response.isMaskingActive) {
-                toggleButton.textContent = "Deactivate Masking Mode";
-                toggleButton.style.backgroundColor = "#e74c3c"; // Red
-                instructions.classList.add("active");
-                showMessage(
-                  "Masking mode activated! Hold Ctrl/Cmd + Click elements to mask them."
-                );
+                showToast("Masking mode activated! Hold Ctrl/⌘ + Click elements to mask them.");
               } else {
-                toggleButton.textContent = "Activate Masking Mode";
-                toggleButton.style.backgroundColor = "#3498db"; // Blue
-                instructions.classList.remove("active");
-                showMessage("Masking mode deactivated.");
+                showToast("Masking mode deactivated. All masks cleared.");
               }
             } else {
-              showMessage("Failed to toggle masking mode.", "error");
+              showToast("Failed to toggle masking mode.", "error");
             }
           }
         );
       } else {
-        showMessage("No active tab found.", "error");
+        showToast("No active tab found.", "error");
       }
     });
+  });
+
+  // Help button handler
+  helpBtn.addEventListener("click", () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL("welcome.html") });
+    window.close();
+  });
+
+  // Test page button handler
+  testBtn.addEventListener("click", () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL("test-page.html") });
+    window.close();
   });
 });
