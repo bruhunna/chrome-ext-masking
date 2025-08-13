@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const toggleButton = document.getElementById("toggleMasking");
   const messageBox = document.getElementById("messageBox");
+  const instructions = document.getElementById("instructions");
 
   // Function to display messages in the popup
   function showMessage(message, type = "success") {
@@ -39,9 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
           } else if (response && response.isMaskingActive) {
             toggleButton.textContent = "Deactivate Masking Mode";
             toggleButton.style.backgroundColor = "#e74c3c"; // Red for active
+            instructions.classList.add("active");
           } else {
             toggleButton.textContent = "Activate Masking Mode";
             toggleButton.style.backgroundColor = "#3498db"; // Blue for inactive
+            instructions.classList.remove("active");
           }
         }
       );
@@ -72,12 +75,14 @@ document.addEventListener("DOMContentLoaded", () => {
               if (response.isMaskingActive) {
                 toggleButton.textContent = "Deactivate Masking Mode";
                 toggleButton.style.backgroundColor = "#e74c3c"; // Red
+                instructions.classList.add("active");
                 showMessage(
-                  "Masking mode activated! Click elements to mask them."
+                  "Masking mode activated! Hold Ctrl/Cmd + Click elements to mask them."
                 );
               } else {
                 toggleButton.textContent = "Activate Masking Mode";
                 toggleButton.style.backgroundColor = "#3498db"; // Blue
+                instructions.classList.remove("active");
                 showMessage("Masking mode deactivated.");
               }
             } else {

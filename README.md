@@ -5,9 +5,10 @@ A Chrome extension that allows users to manually mask any element on a webpage b
 ## 🛡️ Features
 
 ### Manual Element Selection
-- **Click-to-Mask**: Click any element on a webpage to instantly mask it
-- **Visual Feedback**: Blue outline appears when hovering over maskable elements
-- **Toggle Masking**: Click masked elements again to unmask them
+- **Ctrl/⌘ + Click to Mask**: Hold Ctrl (Windows/Linux) or ⌘ (Mac) and click any element to mask it
+- **Normal Interaction Preserved**: Regular clicks work normally - buttons, links, and forms remain functional
+- **Visual Feedback**: Blue outline appears when holding Ctrl/⌘ and hovering over maskable elements
+- **Toggle Masking**: Hold Ctrl/⌘ and click masked elements again to unmask them
 - **Smooth Animations**: Professional transitions and visual effects
 
 ### Privacy & Control
@@ -57,17 +58,18 @@ A Chrome extension that allows users to manually mask any element on a webpage b
 4. You'll see a success message: "Masking mode activated! Click elements to mask them."
 
 #### Masking Elements
-1. Hover over any element on the page
-2. A blue outline will appear around the element
-3. Click the element to mask it
-4. The element will:
+1. Hold Ctrl (Windows/Linux) or ⌘ (Mac) and hover over any element on the page
+2. A blue outline will appear around the element while holding the modifier key
+3. Hold Ctrl/⌘ and click the element to mask it
+4. Regular clicks (without Ctrl/⌘) work normally for buttons, links, and forms
+5. The masked element will:
    - Turn dark gray/black
    - Show ██████ text instead of original content
    - Apply a blur effect
    - Show a "not-allowed" cursor
 
 #### Unmasking Elements
-1. Click on any masked element
+1. Hold Ctrl/⌘ and click on any masked element
 2. It will instantly return to its original appearance
 3. All original content and styling is restored
 
@@ -85,7 +87,8 @@ A Chrome extension that allows users to manually mask any element on a webpage b
 - **State Memory**: The extension remembers your masking preferences
 
 #### Visual Indicators
-- **Blue Outline**: Appears when hovering over maskable elements
+- **Blue Outline**: Appears when holding Ctrl/⌘ and hovering over maskable elements
+- **Real-time Guidance**: Instructions appear when modifier key is pressed
 - **Dark Overlay**: Masked elements have dark background
 - **Blur Effect**: Additional privacy protection with CSS blur
 - **Placeholder Text**: Shows ██████ to indicate masked content

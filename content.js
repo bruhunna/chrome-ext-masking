@@ -40,15 +40,21 @@ function removeMaskingStyle(element) {
 // Click event listener for masking
 function handlePageClick(event) {
   if (isMaskingActive) {
-    event.preventDefault(); // Prevent default link/button actions
-    event.stopPropagation(); // Stop event bubbling
+    // Only mask if Ctrl (Windows/Linux) or Cmd (Mac) key is held down
+    const isMaskingClick = event.ctrlKey || event.metaKey;
+    
+    if (isMaskingClick) {
+      event.preventDefault(); // Prevent default link/button actions
+      event.stopPropagation(); // Stop event bubbling
 
-    const targetElement = event.target;
-    if (maskedElements.has(targetElement)) {
-      removeMaskingStyle(targetElement); // Unmask if already masked
-    } else {
-      applyMaskingStyle(targetElement); // Mask the clicked element
+      const targetElement = event.target;
+      if (maskedElements.has(targetElement)) {
+        removeMaskingStyle(targetElement); // Unmask if already masked
+      } else {
+        applyMaskingStyle(targetElement); // Mask the clicked element
+      }
     }
+    // If no modifier key, allow normal interaction (don't prevent default)
   }
 }
 
@@ -63,13 +69,73 @@ function handleMouseMove(event) {
       currentHighlighted.classList.remove("element-masker-highlight");
     }
 
-    // Add highlight to the new target
+    // Add highlight to the new target only if modifier key is held
     if (
       event.target &&
-      !event.target.classList.contains("element-masker-highlight")
+      !event.target.classList.contains("element-masker-highlight") &&
+      (event.ctrlKey || event.metaKey)
     ) {
       event.target.classList.add("element-masker-highlight");
+    } else if (event.target && !(event.ctrlKey || event.metaKey)) {
+      // Remove highlight if no modifier key
+      event.target.classList.remove("element-masker-highlight");
     }
+  }
+}
+
+// Add keydown/keyup listeners to show/hide highlights
+let isModifierPressed = false;
+
+function handleKeyDown(event) {
+  if (isMaskingActive && (event.ctrlKey || event.metaKey) && !isModifierPressed) {
+    isModifierPressed = true;
+    showMaskingInstructions();
+  }
+}
+
+function handleKeyUp(event) {
+  if (isMaskingActive && isModifierPressed && !(event.ctrlKey || event.metaKey)) {
+    isModifierPressed = false;
+    hideMaskingInstructions();
+    // Remove all highlights
+    document.querySelectorAll('.element-masker-highlight').forEach(el => {
+      el.classList.remove('element-masker-highlight');
+    });
+  }
+}
+
+function showMaskingInstructions() {
+  let instructionDiv = document.getElementById('masking-instructions');
+  if (!instructionDiv) {
+    instructionDiv = document.createElement('div');
+    instructionDiv.id = 'masking-instructions';
+    instructionDiv.innerHTML = `
+      <div style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #2196f3;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        z-index: 10000;
+        pointer-events: none;
+      ">
+        🖱️ Click elements to mask them
+      </div>
+    `;
+    document.body.appendChild(instructionDiv);
+  }
+}
+
+function hideMaskingInstructions() {
+  const instructionDiv = document.getElementById('masking-instructions');
+  if (instructionDiv) {
+    instructionDiv.remove();
   }
 }
 
@@ -111,15 +177,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       document.addEventListener("click", handlePageClick, true); // Use capture phase
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseout", handleMouseOut);
+      document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("keyup", handleKeyUp);
       injectHighlightCSS();
       // Store the state in sessionStorage so it persists across page reloads
       sessionStorage.setItem("elementMaskingActive", "true");
-      console.log("Element Masking: ACTIVATED");
+      console.log("Element Masking: ACTIVATED - Hold Ctrl/Cmd + Click to mask elements");
     } else {
       document.removeEventListener("click", handlePageClick, true);
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseout", handleMouseOut);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
       removeHighlightCSS();
+      hideMaskingInstructions();
       // Unmask all elements when mode is deactivated
       maskedElements.forEach((el) => removeMaskingStyle(el));
       sessionStorage.setItem("elementMaskingActive", "false");
@@ -138,7 +209,9 @@ window.addEventListener("load", () => {
     document.addEventListener("click", handlePageClick, true);
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseout", handleMouseOut);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
     injectHighlightCSS();
-    console.log("Element Masking: Auto-activated on page load.");
+    console.log("Element Masking: Auto-activated on page load. Hold Ctrl/Cmd + Click to mask elements.");
   }
 });
