@@ -3,165 +3,483 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Content Masking Test Page</title>
+    <title>Element Masker - Test Page</title>
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1000px;
         margin: 0 auto;
         padding: 20px;
-        line-height: 1.6;
       }
-      .test-section {
-        background: #f5f5f5;
-        padding: 20px;
-        margin: 20px 0;
-        border-radius: 8px;
-        border-left: 4px solid #2196f3;
-      }
-      .test-section h3 {
-        margin-top: 0;
-        color: #2196f3;
-      }
-      .example {
+
+      .header {
         background: white;
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 4px;
-        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
       }
+
+      .header h1 {
+        font-size: 2.5em;
+        color: #667eea;
+        margin-bottom: 10px;
+      }
+
+      .header p {
+        font-size: 1.1em;
+        color: #666;
+        margin-bottom: 20px;
+      }
+
       .instructions {
         background: #e3f2fd;
-        padding: 15px;
-        border-radius: 8px;
+        border-left: 4px solid #2196f3;
+        padding: 20px;
+        border-radius: 0 8px 8px 0;
+        margin-bottom: 20px;
+      }
+
+      .instructions h3 {
+        color: #1976d2;
+        margin-bottom: 15px;
+      }
+
+      .instruction-step {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+        font-weight: 500;
+      }
+
+      .step-number {
+        background: #2196f3;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9em;
+        font-weight: bold;
+        margin-right: 12px;
+        flex-shrink: 0;
+      }
+
+      .key-combo {
+        background: #667eea;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+        font-size: 0.85em;
+        font-weight: 600;
+        margin: 0 4px;
+      }
+
+      .test-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
         margin-bottom: 30px;
+      }
+
+      .test-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .test-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .test-card h3 {
+        color: #667eea;
+        margin-bottom: 15px;
+        font-size: 1.3em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .test-content {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        border: 2px dashed #e9ecef;
+        transition: border-color 0.2s ease;
+      }
+
+      .test-content:hover {
+        border-color: #667eea;
+      }
+
+      .sensitive-data {
+        background: #fff3cd;
+        color: #856404;
+        padding: 8px 12px;
+        border-radius: 6px;
+        display: inline-block;
+        margin: 5px;
+        font-weight: 500;
+        border: 1px solid #ffeaa7;
+      }
+
+      .form-section {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #495057;
+      }
+
+      input, textarea, select {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #e9ecef;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.2s ease;
+      }
+
+      input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .btn {
+        background: #667eea;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        margin: 5px;
+      }
+
+      .btn:hover {
+        background: #5a6fd8;
+      }
+
+      .btn-secondary {
+        background: #6c757d;
+      }
+
+      .btn-secondary:hover {
+        background: #5a6268;
+      }
+
+      .demo-website {
+        background: white;
+        border-radius: 12px;
+        padding: 0;
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+
+      .website-header {
+        background: #2c3e50;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .website-content {
+        padding: 25px;
+      }
+
+      .profile-card {
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        background: #f8f9fa;
+      }
+
+      .navigation {
+        background: #495057;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        gap: 20px;
+      }
+
+      .nav-item {
+        color: white;
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        transition: background 0.2s ease;
+      }
+
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .highlight-box {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        text-align: center;
+      }
+
+      .footer {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        margin-top: 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .footer p {
+        color: #6c757d;
+        margin-bottom: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .test-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .container {
+          padding: 10px;
+        }
+
+        .header h1 {
+          font-size: 2em;
+        }
       }
     </style>
   </head>
   <body>
-    <h1>🛡️ Content Masking Extension Test Page</h1>
-
-    <div class="instructions">
-      <h2>Testing Instructions:</h2>
-      <ol>
-        <li>Load the Content Masking extension in Chrome</li>
-        <li>Click the extension icon in your toolbar</li>
-        <li>Toggle "Enable Masking" ON</li>
-        <li>Select the types of content you want to mask</li>
-        <li>Click "Apply Masking" button</li>
-        <li>Watch the content below get masked with bullet points (•••)</li>
-      </ol>
-    </div>
-
-    <div class="test-section">
-      <h3>📧 Email Addresses</h3>
-      <div class="example">
-        <p>Contact us at: support@company.com</p>
-        <p>Sales inquiries: john.doe@example.org</p>
-        <p>Technical support: tech.support@mycompany.net</p>
+    <div class="container">
+      <div class="header">
+        <h1>🛡️ Element Masker Test Page</h1>
+        <p>Practice masking elements with various types of sensitive content</p>
+        
+        <div class="instructions">
+          <h3>🎯 How to Test the Extension</h3>
+          <div class="instruction-step">
+            <div class="step-number">1</div>
+            <span>Click the Extension Masker icon in your browser toolbar</span>
+          </div>
+          <div class="instruction-step">
+            <div class="step-number">2</div>
+            <span>Toggle the "Masking Mode" switch to activate it</span>
+          </div>
+          <div class="instruction-step">
+            <div class="step-number">3</div>
+            <span>Hold <span class="key-combo">Ctrl</span> (or <span class="key-combo">⌘</span> on Mac) and hover over elements below</span>
+          </div>
+          <div class="instruction-step">
+            <div class="step-number">4</div>
+            <span>Hold <span class="key-combo">Ctrl/⌘</span> + Click any element to mask it</span>
+          </div>
+          <div class="instruction-step">
+            <div class="step-number">5</div>
+            <span>Regular clicks still work normally for buttons and links</span>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="test-section">
-      <h3>📱 Phone Numbers</h3>
-      <div class="example">
-        <p>Call us: (555) 123-4567</p>
-        <p>International: +1-800-555-0199</p>
-        <p>Alternative format: 555.123.4567</p>
-        <p>Simple format: 555-123-4567</p>
+      <div class="test-grid">
+        <div class="test-card">
+          <h3>� Contact Information</h3>
+          <div class="test-content">
+            <p><strong>Email:</strong> john.doe@company.com</p>
+            <p><strong>Phone:</strong> (555) 123-4567</p>
+            <p><strong>Address:</strong> 123 Main St, Anytown, USA 12345</p>
+            <p><strong>Alternative Phone:</strong> +1-800-555-0199</p>
+          </div>
+          <p><em>Try masking individual contact details or the entire section.</em></p>
+        </div>
+
+        <div class="test-card">
+          <h3>💳 Financial Information</h3>
+          <div class="test-content">
+            <div class="sensitive-data">Card: 4111 1111 1111 1111</div>
+            <div class="sensitive-data">Exp: 12/25</div>
+            <div class="sensitive-data">CVV: 123</div>
+            <div class="sensitive-data">SSN: 123-45-6789</div>
+            <div class="sensitive-data">Account: 9876543210</div>
+          </div>
+          <p><em>Mask sensitive financial data individually or in groups.</em></p>
+        </div>
+
+        <div class="test-card">
+          <h3>� Personal Profile</h3>
+          <div class="profile-card">
+            <h4>User Profile: Sarah Johnson</h4>
+            <p><strong>Username:</strong> sarah_j_2024</p>
+            <p><strong>Employee ID:</strong> EMP-7892</p>
+            <p><strong>Department:</strong> Human Resources</p>
+            <p><strong>Salary:</strong> $85,000/year</p>
+            <p><strong>Start Date:</strong> March 15, 2020</p>
+          </div>
+          <p><em>Practice masking specific profile fields.</em></p>
+        </div>
+
+        <div class="test-card">
+          <h3>🏢 Corporate Data</h3>
+          <div class="test-content">
+            <p><strong>API Key:</strong> sk_live_abc123def456ghi789</p>
+            <p><strong>Database URL:</strong> db.company.com:5432/production</p>
+            <p><strong>Revenue Q4:</strong> $2.4M</p>
+            <p><strong>Client Code:</strong> CLI-CONF-2024-789</p>
+          </div>
+          <p><em>Mask confidential business information.</em></p>
+        </div>
       </div>
-    </div>
 
-    <div class="test-section">
-      <h3>💳 Credit Card Numbers</h3>
-      <div class="example">
-        <p>Visa: 4111 1111 1111 1111</p>
-        <p>MasterCard: 5555-5555-5555-4444</p>
-        <p>American Express: 3782 822463 10005</p>
-        <p>Discover: 6011111111111117</p>
+      <div class="demo-website">
+        <div class="website-header">
+          <div>🏪</div>
+          <h2>Demo E-commerce Site</h2>
+        </div>
+        <div class="navigation">
+          <a href="#" class="nav-item">Home</a>
+          <a href="#" class="nav-item">Products</a>
+          <a href="#" class="nav-item">My Account</a>
+          <a href="#" class="nav-item">Cart (3)</a>
+        </div>
+        <div class="website-content">
+          <h3>Welcome back, Alex Thompson!</h3>
+          <p>Your last order (#ORD-2024-8756) was delivered on July 28, 2024.</p>
+          
+          <div class="form-section">
+            <h4>🛍️ Quick Checkout Form</h4>
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" placeholder="Enter your full name" value="Alex Thompson">
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="your.email@example.com" value="alex.thompson@email.com">
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" placeholder="(555) 123-4567" value="(555) 987-6543">
+            </div>
+            <div class="form-group">
+              <label>Credit Card Number</label>
+              <input type="text" placeholder="1234 5678 9012 3456" value="4532 1234 5678 9012">
+            </div>
+            <div class="form-group">
+              <label>Billing Address</label>
+              <textarea placeholder="Enter your full address">789 Oak Avenue, Suite 456
+Springfield, IL 62701</textarea>
+            </div>
+            <button class="btn">Complete Purchase</button>
+            <button class="btn btn-secondary">Save for Later</button>
+          </div>
+
+          <div class="highlight-box">
+            <h3>🎯 Pro Tip</h3>
+            <p>Try masking form fields above, then attempt to fill them out normally. Regular interactions should still work!</p>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="test-section">
-      <h3>🆔 Social Security Numbers</h3>
-      <div class="example">
-        <p>SSN: 123-45-6789</p>
-        <p>Alternative format: 987654321</p>
-        <p>With spaces: 555 44 3333</p>
+      <div class="test-card">
+        <h3>⚡ Dynamic Content Testing</h3>
+        <div class="test-content" id="dynamicContent">
+          <p>This section will populate with dynamic content in 3 seconds...</p>
+        </div>
+        <button class="btn" onclick="addDynamicContent()">Add More Dynamic Content</button>
+        <p><em>Test masking on dynamically added elements.</em></p>
       </div>
-    </div>
 
-    <div class="test-section">
-      <h3>📝 Mixed Content Example</h3>
-      <div class="example">
-        <p>
-          Hi John, please contact me at john.smith@company.com or call (555)
-          987-6543. For payment, use card 4111 1111 1111 1111 and reference SSN
-          123-45-6789.
-        </p>
-      </div>
-    </div>
-
-    <div class="test-section">
-      <h3>🔧 Custom Rule Testing</h3>
-      <div class="example">
-        <p>This content contains the word "confidential" information.</p>
-        <p>Another example with "secret" data that should be masked.</p>
-        <p>Test custom masking with "proprietary" content.</p>
-      </div>
-      <p>
-        <strong>Instructions:</strong> Add "confidential", "secret", or
-        "proprietary" as custom rules in the extension popup to test custom
-        masking.
-      </p>
-    </div>
-
-    <div class="test-section">
-      <h3>📝 Input Fields Test</h3>
-      <div class="example">
-        <form>
-          <p>
-            <label
-              >Email: <input type="email" placeholder="Enter your email"
-            /></label>
-          </p>
-          <p>
-            <label
-              >Phone: <input type="tel" placeholder="Enter phone number"
-            /></label>
-          </p>
-          <p>
-            <label
-              >Credit Card:
-              <input type="text" placeholder="Enter credit card number"
-            /></label>
-          </p>
-          <p>
-            <label
-              >Comments:
-              <textarea
-                placeholder="Enter any sensitive information"
-              ></textarea>
-            </label>
-          </p>
-        </form>
+      <div class="footer">
+        <p>🛡️ Element Masker Test Environment</p>
+        <p>This page contains various types of content to test the extension's masking capabilities.</p>
+        <p><strong>Remember:</strong> Hold Ctrl/⌘ + Click to mask elements • Regular clicks work normally</p>
       </div>
     </div>
 
     <script>
-      // Add some dynamic content to test dynamic masking
+      // Add dynamic content for testing
       setTimeout(() => {
-        const dynamicDiv = document.createElement("div");
-        dynamicDiv.className = "test-section";
+        const dynamicDiv = document.getElementById('dynamicContent');
         dynamicDiv.innerHTML = `
-                <h3>⚡ Dynamic Content Test</h3>
-                <div class="example">
-                    <p>Dynamically added email: dynamic@test.com</p>
-                    <p>Dynamically added phone: (555) 999-8888</p>
-                </div>
-            `;
-        document.body.appendChild(dynamicDiv);
+          <h4>🔄 Dynamically Loaded Content</h4>
+          <p><strong>API Response:</strong> {"userId": 12345, "token": "abc123xyz789"}</p>
+          <p><strong>Session ID:</strong> sess_1a2b3c4d5e6f7g8h</p>
+          <p><strong>Last Login:</strong> August 13, 2025 at 2:45 PM</p>
+          <div class="sensitive-data">Dynamic Email: dynamic@example.com</div>
+          <div class="sensitive-data">Dynamic Phone: (555) 111-2222</div>
+        `;
       }, 3000);
+
+      function addDynamicContent() {
+        const container = document.getElementById('dynamicContent');
+        const newContent = document.createElement('div');
+        newContent.style.marginTop = '15px';
+        newContent.style.padding = '10px';
+        newContent.style.background = '#e3f2fd';
+        newContent.style.borderRadius = '6px';
+        newContent.innerHTML = `
+          <p><strong>Newly Added:</strong> user${Math.floor(Math.random() * 1000)}@test.com</p>
+          <p><strong>Random ID:</strong> ${Math.random().toString(36).substr(2, 9)}</p>
+        `;
+        container.appendChild(newContent);
+      }
+
+      // Simulate real website interactions
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          if (this.textContent.includes('Purchase')) {
+            e.preventDefault();
+            alert('🛒 Purchase simulation - This button still works normally even in masking mode!');
+          } else if (this.textContent.includes('Save')) {
+            e.preventDefault();
+            alert('💾 Save simulation - Regular interactions are preserved!');
+          }
+        });
+      });
+
+      document.querySelectorAll('.nav-item').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          alert(`🔗 Navigation to ${this.textContent} - Links work normally!`);
+        });
+      });
     </script>
   </body>
 </html>
