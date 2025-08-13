@@ -26,7 +26,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["welcome.html", "test-page.html"],
+      "resources": ["welcome.html", "test-page.html", "icons/icon16.png", "icons/icon48.png", "icons/icon128.png"],
       "matches": ["<all_urls>"]
     }
   ]
