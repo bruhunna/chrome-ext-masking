@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Icon Generator</title>
+  </head>
+  <body>
+    <canvas id="canvas16" width="16" height="16"></canvas>
+    <canvas id="canvas48" width="48" height="48"></canvas>
+    <canvas id="canvas128" width="128" height="128"></canvas>
+
+    <div>
+      <h3>Generated Icons:</h3>
+      <p>16x16: <a id="download16" download="icon16.png">Download</a></p>
+      <p>48x48: <a id="download48" download="icon48.png">Download</a></p>
+      <p>128x128: <a id="download128" download="icon128.png">Download</a></p>
+    </div>
+
+    <script>
+      function createIcon(canvas) {
+        const ctx = canvas.getContext("2d");
+        const size = canvas.width;
+
+        // Background
+        ctx.fillStyle = "#333333";
+        ctx.fillRect(0, 0, size, size);
+
+        // Create mask shape (rounded rectangle)
+        ctx.fillStyle = "#FFFFFF";
+        const padding = size * 0.15;
+        const maskWidth = size - padding * 2;
+        const maskHeight = size * 0.6;
+        const maskY = padding + size * 0.1;
+
+        // Draw mask outline
+        ctx.beginPath();
+        ctx.roundRect(padding, maskY, maskWidth, maskHeight, size * 0.1);
+        ctx.fill();
+
+        // Draw eye holes
+        ctx.fillStyle = "#333333";
+        const eyeSize = size * 0.12;
+        const eyeY = maskY + maskHeight * 0.35;
+        const eyeSpacing = size * 0.25;
+
+        // Left eye
+        ctx.beginPath();
+        ctx.ellipse(
+          size / 2 - eyeSpacing,
+          eyeY,
+          eyeSize,
+          eyeSize * 0.8,
+          0,
+          0,
+          2 * Math.PI
+        );
+        ctx.fill();
+
+        // Right eye
+        ctx.beginPath();
+        ctx.ellipse(
+          size / 2 + eyeSpacing,
+          eyeY,
+          eyeSize,
+          eyeSize * 0.8,
+          0,
+          0,
+          2 * Math.PI
+        );
+        ctx.fill();
+
+        // Add "██" pattern for masking effect
+        ctx.fillStyle = "#666666";
+        ctx.font = `${size * 0.15}px monospace`;
+        ctx.textAlign = "center";
+        ctx.fillText("██", size / 2, maskY + maskHeight + size * 0.15);
+      }
+
+      // Create icons
+      createIcon(document.getElementById("canvas16"));
+      createIcon(document.getElementById("canvas48"));
+      createIcon(document.getElementById("canvas128"));
+
+      // Set up download links
+      function setupDownload(canvasId, linkId) {
+        const canvas = document.getElementById(canvasId);
+        const link = document.getElementById(linkId);
+        link.href = canvas.toDataURL("image/png");
+      }
+
+      setupDownload("canvas16", "download16");
+      setupDownload("canvas48", "download48");
+      setupDownload("canvas128", "download128");
+    </script>
+  </body>
+</html>

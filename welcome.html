@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Element Masker - Welcome</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        color: #333;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .welcome-card {
+        background: white;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        margin-bottom: 30px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin: 0;
+        color: #2196f3;
+      }
+
+      .header p {
+        font-size: 1.2em;
+        color: #666;
+        margin: 10px 0 0 0;
+      }
+
+      .icon {
+        font-size: 4em;
+        margin-bottom: 20px;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin: 40px 0;
+      }
+
+      .feature {
+        text-align: center;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .feature-icon {
+        font-size: 2em;
+        margin-bottom: 15px;
+      }
+
+      .feature h3 {
+        margin: 0 0 10px 0;
+        color: #2196f3;
+      }
+
+      .feature p {
+        color: #666;
+        font-size: 0.9em;
+      }
+
+      .instructions {
+        background: #e3f2fd;
+        border-left: 4px solid #2196f3;
+        padding: 20px;
+        margin: 30px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .instructions h3 {
+        margin-top: 0;
+        color: #1976d2;
+      }
+
+      .step {
+        margin: 15px 0;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+      }
+
+      .step:last-child {
+        border-bottom: none;
+      }
+
+      .step-number {
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        background: #2196f3;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 25px;
+        font-weight: bold;
+        margin-right: 10px;
+        font-size: 0.9em;
+      }
+
+      .cta {
+        text-align: center;
+        margin: 40px 0;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 30px;
+        background: #2196f3;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+        margin: 10px;
+        transition: background 0.3s ease;
+      }
+
+      .btn:hover {
+        background: #1976d2;
+      }
+
+      .btn-secondary {
+        background: #666;
+      }
+
+      .btn-secondary:hover {
+        background: #555;
+      }
+
+      .warning {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 6px;
+        padding: 15px;
+        margin: 20px 0;
+        color: #856404;
+      }
+
+      .warning h4 {
+        margin-top: 0;
+        color: #b8860b;
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="welcome-card">
+        <div class="header">
+          <div class="icon">🛡️</div>
+          <h1>Element Masker</h1>
+          <p>Click any element to mask it instantly</p>
+        </div>
+
+        <div class="features">
+          <div class="feature">
+            <div class="feature-icon">🖱️</div>
+            <h3>Click to Mask</h3>
+            <p>
+              Simply click any element on a webpage to instantly mask it with a
+              dark overlay
+            </p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">👁️</div>
+            <h3>Visual Feedback</h3>
+            <p>Blue outlines show which elements you can mask when hovering</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🔄</div>
+            <h3>Toggle Masking</h3>
+            <p>
+              Click masked elements again to instantly restore their original
+              content
+            </p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">💾</div>
+            <h3>Session Memory</h3>
+            <p>
+              Your masking preferences and masked elements persist across page
+              reloads
+            </p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">⚡</div>
+            <h3>Real-time</h3>
+            <p>Instant masking and unmasking with smooth visual transitions</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🎯</div>
+            <h3>Precise Control</h3>
+            <p>You decide exactly what gets masked - no automatic detection</p>
+          </div>
+        </div>
+
+        <div class="instructions">
+          <h3>How to Use Element Masker</h3>
+
+          <div class="step">
+            <span class="step-number">1</span>
+            <strong>Click the extension icon</strong> in your browser toolbar
+          </div>
+
+          <div class="step">
+            <span class="step-number">2</span>
+            <strong>Click "Activate Masking Mode"</strong> - the button will
+            turn red
+          </div>
+
+          <div class="step">
+            <span class="step-number">3</span>
+            <strong>Hover over elements</strong> to see them highlighted with
+            blue outlines
+          </div>
+
+          <div class="step">
+            <span class="step-number">4</span>
+            <strong>Click elements to mask them</strong> - they'll turn dark
+            with ██████ text
+          </div>
+
+          <div class="step">
+            <span class="step-number">5</span>
+            <strong>Click "Deactivate Masking Mode"</strong> when finished to
+            clear all masks
+          </div>
+        </div>
+
+        <div class="warning">
+          <h4>⚠️ Important Privacy Notes</h4>
+          <ul>
+            <li>
+              This extension only masks content visually - it doesn't prevent
+              websites from collecting data
+            </li>
+            <li>Masked elements appear dark with ██████ placeholder text</li>
+            <li>
+              You can click masked elements again to restore their original
+              content
+            </li>
+            <li>Masking state persists when you refresh the page</li>
+            <li>
+              Perfect for screen sharing, screenshots, and privacy protection
+            </li>
+          </ul>
+        </div>
+
+        <div class="cta">
+          <a
+            href="#"
+            class="btn"
+            onclick="chrome.tabs.create({url: 'chrome://extensions/'}); return false;"
+          >
+            Manage Extensions
+          </a>
+          <a
+            href="#"
+            class="btn btn-secondary"
+            onclick="window.close(); return false;"
+          >
+            Start Masking
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Element Masker v1.0 - Built for privacy and productivity</p>
+    </footer>
+  </body>
+</html>
