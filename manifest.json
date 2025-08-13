@@ -3,6 +3,7 @@
   "name": "Element Masker",
   "version": "1.0",
   "description": "Masks elements on a webpage by clicking them.",
+  "author": "Baki Ruhunnabi",
   "permissions": ["activeTab", "scripting"],
   "host_permissions": ["<all_urls>"],
   "action": {

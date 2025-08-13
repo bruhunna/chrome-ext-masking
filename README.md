@@ -2,6 +2,8 @@
 
 A Chrome extension that allows users to manually mask any element on a webpage by simply clicking on it. Perfect for privacy protection during screen sharing, creating sanitized screenshots, or hiding sensitive information while browsing.
 
+**Developer:** Baki Ruhunnabi (bruhunna)
+
 ## 🛡️ Features
 
 ### Manual Element Selection
