@@ -12,7 +12,8 @@
       }
 
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
         width: 280px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: #333;
@@ -150,7 +151,8 @@
         color: white;
         padding: 2px 6px;
         border-radius: 4px;
-        font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+        font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas,
+          "Courier New", monospace;
         font-size: 0.75em;
         font-weight: 500;
       }
@@ -159,6 +161,112 @@
         display: flex;
         gap: 8px;
         margin-top: 15px;
+      }
+
+      .mask-style-section {
+        margin-bottom: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #28a745;
+      }
+
+      .style-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 500;
+        font-size: 0.9em;
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+
+      .current-style {
+        font-size: 0.8em;
+        padding: 2px 8px;
+        background: #28a745;
+        color: white;
+        border-radius: 12px;
+        font-weight: 500;
+      }
+
+      .style-options {
+        display: flex;
+        gap: 8px;
+      }
+
+      .style-btn {
+        flex: 1;
+        background: white;
+        border: 2px solid #e9ecef;
+        padding: 10px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8em;
+        color: #495057;
+      }
+
+      .style-btn:hover {
+        border-color: #667eea;
+        background: #f8f9ff;
+      }
+
+      .style-btn.active {
+        border-color: #667eea;
+        background: linear-gradient(135deg, #667eea10, #764ba210);
+        color: #667eea;
+      }
+
+      .style-preview {
+        width: 30px;
+        height: 16px;
+        border-radius: 4px;
+        position: relative;
+      }
+
+      .blur-preview {
+        background: #333;
+        filter: blur(3px);
+      }
+
+      .solid-preview {
+        background: #333;
+      }
+
+      .stats-section {
+        background: #e8f4f8;
+        border-radius: 8px;
+        padding: 12px 15px;
+        margin-bottom: 15px;
+        border-left: 4px solid #17a2b8;
+      }
+
+      .stat-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .stat-label {
+        font-size: 0.85em;
+        color: #2c3e50;
+        font-weight: 500;
+      }
+
+      .stat-value {
+        font-size: 0.9em;
+        font-weight: 600;
+        color: #17a2b8;
+        background: white;
+        padding: 2px 8px;
+        border-radius: 12px;
+        min-width: 24px;
+        text-align: center;
       }
 
       .action-btn {
@@ -232,7 +340,18 @@
   <body>
     <div class="container">
       <div class="header">
-        <h1><img src="icons/icon48.png" alt="Element Masker Icon" style="width: 32px; height: 32px; vertical-align: middle; margin-right: 8px;">Element Masker</h1>
+        <h1>
+          <img
+            src="icons/icon48.png"
+            alt="Element Masker Icon"
+            style="
+              width: 32px;
+              height: 32px;
+              vertical-align: middle;
+              margin-right: 8px;
+            "
+          />Element Masker
+        </h1>
         <div class="subtitle">Privacy protection for your screen</div>
       </div>
 
@@ -240,7 +359,9 @@
         <div class="toggle-section">
           <div class="toggle-label">
             <span>Masking Mode</span>
-            <span id="statusIndicator" class="status-indicator inactive">Inactive</span>
+            <span id="statusIndicator" class="status-indicator inactive"
+              >Inactive</span
+            >
           </div>
           <div id="toggleSwitch" class="toggle-switch">
             <div class="toggle-slider"></div>
@@ -253,17 +374,39 @@
             <span>How to mask elements:</span>
           </div>
           <div class="instructions-list">
-            Hold <span class="key-combo">Ctrl</span> (or <span class="key-combo">⌘</span> on Mac) + Click any element to mask it
+            Hold <span class="key-combo">Ctrl</span> (or
+            <span class="key-combo">⌘</span> on Mac) + Click any element to mask
+            it
+          </div>
+        </div>
+
+        <div id="maskStyleSection" class="mask-style-section">
+          <div class="style-label">
+            <span>Mask Style</span>
+            <span id="currentStyle" class="current-style">Blur</span>
+          </div>
+          <div class="style-options">
+            <button class="style-btn" id="blurStyle" data-style="blur">
+              <div class="style-preview blur-preview"></div>
+              <span>Blur</span>
+            </button>
+            <button class="style-btn" id="solidStyle" data-style="solid">
+              <div class="style-preview solid-preview"></div>
+              <span>Solid</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="statsSection" class="stats-section">
+          <div class="stat-item">
+            <span class="stat-label">Masked Elements:</span>
+            <span id="maskCount" class="stat-value">0</span>
           </div>
         </div>
 
         <div class="quick-actions">
-          <button class="action-btn" id="helpBtn">
-            📖 Guide
-          </button>
-          <button class="action-btn" id="testBtn">
-            🧪 Test Page
-          </button>
+          <button class="action-btn" id="helpBtn">📖 Guide</button>
+          <button class="action-btn" id="testBtn">🧪 Test Page</button>
         </div>
       </div>
 
