@@ -13,6 +13,22 @@
       "128": "icons/icon128.png"
     }
   },
+  "commands": {
+    "toggle-masking": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+M",
+        "mac": "Command+Shift+M"
+      },
+      "description": "Toggle masking mode on/off"
+    },
+    "clear-all-masks": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+C",
+        "mac": "Command+Shift+C"
+      },
+      "description": "Clear all masks on current page"
+    }
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
@@ -26,7 +42,13 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["welcome.html", "test-page.html", "icons/icon16.png", "icons/icon48.png", "icons/icon128.png"],
+      "resources": [
+        "welcome.html",
+        "test-page.html",
+        "icons/icon16.png",
+        "icons/icon48.png",
+        "icons/icon128.png"
+      ],
       "matches": ["<all_urls>"]
     }
   ]
